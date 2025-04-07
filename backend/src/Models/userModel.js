@@ -6,13 +6,12 @@ const userSchema = new Schema ({
         type: String,
         required: true,
     },
-    WhatsappNo: {
-        type: Number,
+    whatsappNo: {
+        type: String,
         required: true,
     }
 },{
     timestamps :true
-})
+});
 
-export const User = mongoose.model('User', userSchema)
-
+export const User = mongoose.model('User', userSchema);

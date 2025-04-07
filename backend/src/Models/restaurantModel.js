@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-import menuSchema from 'menuModel';
 
-const restrauntSchema = new Schema({
+const restaurantSchema = new Schema({
     name:{
         type: String,
         required: true,
@@ -16,6 +15,10 @@ const restrauntSchema = new Schema({
         enum: ["Veg","Non-veg","Both"],
         required: true,
     },
-    menu : [menuSchema],
+    menu: [{
+        type: mongoose.Schema.Types.ObjectId,  
+        ref: 'Menu'                             
+    }],
+},{timestamps:true});
 
-},{timestamps:true})
+export const Restaurant = mongoose.model('Restaurant', restaurantSchema);

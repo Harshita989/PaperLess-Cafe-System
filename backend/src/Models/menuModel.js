@@ -1,14 +1,15 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";  
+const Schema = mongoose.Schema;
 
-const menuSchema = new mongoose.Schema({
+const menuSchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true,
     },
-    restraunt:{
+    restaurant:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: restrauntModel,
+        ref: Restaurant,
     },
     description: {
         type: String,
@@ -46,4 +47,4 @@ const menuSchema = new mongoose.Schema({
     },
 });
 
-export const Menu = mongoose.model('menu', menuSchema);
+export const Menu = mongoose.model('Menu', menuSchema); 
