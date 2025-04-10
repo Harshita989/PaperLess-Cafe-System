@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
-import axios from 'axios'
-import Home from './pages/Home'
+import './index.css'
+import Form from './components/Form'
+import Menu from './components/Menu'
 
 function App() {
-  const [jokes,setJokes] = useState([])
-
-  
-
   return (
-    <>
-    <Home/>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Form />} />
+        <Route path="/menu" element={<Menu />} />
+      </Routes>
+    </Router>
   )
 }
 

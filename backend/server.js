@@ -1,26 +1,31 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import path from 'path';
+import cors from 'cors';
+import menuRoutes from './src/api/menu.js';
 
 const app = express();
+app.use(cors()); 
 
-const mongoURL = "mongodb://localhost:27017/paperless_cafe";
+// --- Database connection ---
+const mongoURL = "mongodb://localhost:27017/paperless_cafe"; // Static URL
 
-// Connect to MongoDB
-async function main() {
-    try {
-        await mongoose.connect(mongoURL);
-        console.log("Connected to DB");
-    } catch (err) {
-        console.error("Error connecting to DB:", err);
-    }
-}
+mongoose.connect(mongoURL)
+    .then(() => {
+        console.log("✅ Connected to MongoDB");
+    })
+    .catch((err) => {
+        console.error("❌ Error connecting to MongoDB:", err);
+    });
 
-main();
+// --- Middleware ---
+app.use(express.json()); // Body parser
 
+// --- Routes ---
+app.use('/api/menu', menuRoutes);
+
+// --- Server Start ---
 const port = process.env.PORT || 3000;
 
-// Start the server
 app.listen(port, () => {
-    console.log(`Server ready on port ${port}`);
+    console.log(`🚀 Server ready at port ${port}`);
 });
