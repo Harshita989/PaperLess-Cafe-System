@@ -9,7 +9,7 @@ const Menu = () => {
     useEffect(() => {
         const fetchMenuItems = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/menu'); 
+                const response = await axios.get('http://localhost:9000/api/menu'); 
                 setMenuItems(response.data); // Assuming your backend returns an array of menu items
                 setLoading(false);
             } catch (err) {

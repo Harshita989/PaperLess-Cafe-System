@@ -3,6 +3,7 @@ import './App.css'
 import './index.css'
 import Form from './components/Form'
 import Menu from './components/Menu'
+import Admin from './components/Admin'
 
 function App() {
   return (
@@ -10,9 +11,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Form />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/admin" element={<Admin/>} />
       </Routes>
     </Router>
   )
 }
 
 export default App
+ 

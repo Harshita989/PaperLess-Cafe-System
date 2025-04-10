@@ -14,7 +14,7 @@ const Admin = () => {
     preparationTime: '',
   });
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -27,15 +27,30 @@ const Admin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Basic validation
+      if (!formData.name.trim()) {
+        setMessage({ text: 'Name is required', type: 'error' });
+        return;
+      }
+      if (!formData.price || parseFloat(formData.price) <= 0) {
+        setMessage({ text: 'Price must be a positive number', type: 'error' });
+        return;
+      }
+      if (!formData.category) {
+        setMessage({ text: 'Category is required', type: 'error' });
+        return;
+      }
+
       const payload = {
         ...formData,
         price: parseFloat(formData.price),
-        ingredients: formData.ingredients.split(',').map((ingredient) => ingredient.trim()), // Split ingredients
-        preparationTime: parseInt(formData.preparationTime),
+        ingredients: formData.ingredients ? formData.ingredients.split(',').map(i => i.trim()).filter(i => i) : [],
+        preparationTime: formData.preparationTime ? parseInt(formData.preparationTime) : undefined
       };
 
-      const response = await axios.post('http://localhost:5000/api/menu', payload);
-      setMessage('Menu item added successfully!');
+      const response = await axios.post('http://localhost:9000/api/menu', payload);
+      
+      setMessage({ text: 'Menu item added successfully!', type: 'success' });
       setFormData({
         name: '',
         description: '',
@@ -48,8 +63,14 @@ const Admin = () => {
         preparationTime: '',
       });
     } catch (error) {
-      console.error(error);
-      setMessage('Failed to add menu item.');
+      console.error('Error adding menu item:', error);
+      
+      // Handle specific error messages from backend
+      const errorMessage = error.response?.data?.details || error.response?.data?.error || 'Failed to add menu item';
+      setMessage({ 
+        text: typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage),
+        type: 'error' 
+      });
     }
   };
 
@@ -92,7 +113,11 @@ const Admin = () => {
 
         <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded w-full mt-4">Add Menu Item</button>
 
-        {message && <p className="text-center mt-4 text-green-600">{message}</p>}
+        {message.text && (
+          <p className={`text-center mt-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>
+            {message.text}
+          </p>
+        )}
       </form>
     </div>
   );

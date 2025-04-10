@@ -20,7 +20,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-.input {
+/* .input {
   @apply w-full p-2 mb-4 border border-gray-300 rounded;
-}
+} */
 
