@@ -2,8 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import menuRoutes from './src/api/menu.js';
+const port = 9000;
 
 const app = express();
+
+
 app.use(cors()); 
 
 // --- Database connection ---
@@ -23,9 +26,6 @@ app.use(express.json()); // Body parser
 // --- Routes ---
 app.use('/api/menu', menuRoutes);
 
-// --- Server Start ---
-const port = process.env.PORT || 3000;
-
 app.listen(port, () => {
-    console.log(`🚀 Server ready at port ${port}`);
+    console.log("🚀 Server ready at port " + port);
 });
