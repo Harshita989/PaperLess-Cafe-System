@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import menuRoutes from './src/api/menu.js';
+import cartRoutes from './src/api/cart.js';
+
 const port = 9000;
 
 const app = express();
@@ -25,6 +27,7 @@ app.use(express.json()); // Body parser
 
 // --- Routes ---
 app.use('/api/menu', menuRoutes);
+app.use('/api/cart', cartRoutes);
 
 app.listen(port, () => {
     console.log("🚀 Server ready at port " + port);
