@@ -1,21 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import './App.css'
-import './index.css'
-import Form from './components/Form'
-import Menu from './components/Menu'
-import Admin from './components/Admin'
+import './App.css';
+import './index.css';
+import './assets/fonts/fonts.css';
+import { CartProvider } from './context/CartContext';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import AppRoutes from './components/AppRoutes';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Form />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/admin" element={<Admin/>} />
-      </Routes>
-    </Router>
-  )
+    <CartProvider>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow">
+          <AppRoutes />
+        </main>
+        <Footer />
+      </div>
+    </CartProvider>
+  );
 }
 
-export default App
- 
+export default App;

@@ -1,0 +1,37 @@
+/* Playwrite IT Moderna - Handwritten headings */
+@font-face {
+  font-family: 'Playwrite';
+  src: url('./Playwrite_IT_Moderna/PlaywriteITModerna[wght].ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* Open Sans - Body text */
+@font-face {
+  font-family: 'OpenSans';
+  src: url('./Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* Poppins - Buttons/Navigation */
+@font-face {
+  font-family: 'Poppins';
+  src: url('./Poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./Poppins/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+/* Sigmar - Decorative accents */
+@font-face {
+  font-family: 'Sigmar';
+  src: url('./Sigmar/Sigmar-Regular.ttf') format('truetype');
+  font-display: swap;
+}

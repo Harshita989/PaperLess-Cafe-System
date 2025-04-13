@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useCart } from '../context/CartContext';
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
-  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -23,40 +25,13 @@ const Menu = () => {
     fetchMenuItems();
   }, []);
 
-  // Add to Cart (with quantity)
-  const addToCart = (item) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(cartItem => cartItem._id === item._id);
-
-      if (existingItem) {
-        return prevCart.map(cartItem =>
-          cartItem._id === item._id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
-      } else {
-        return [...prevCart, { ...item, quantity: 1 }];
-      }
-    });
-  };
-
-  // Remove from Cart (single quantity)
-  const removeFromCart = (itemId) => {
-    setCart((prevCart) => {
-      return prevCart
-        .map(cartItem =>
-          cartItem._id === itemId
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
-        )
-        .filter(cartItem => cartItem.quantity > 0); // Remove if quantity becomes 0
-    });
-  };
-
-  // Calculate total price
-  const calculateTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+  // Get unique categories
+  const categories = ['All', ...new Set(menuItems.map(item => item.category))];
+  
+  // Filter items by active category
+  const filteredItems = activeCategory === 'All' 
+    ? menuItems 
+    : menuItems.filter(item => item.category === activeCategory);
 
   if (loading) {
     return (
@@ -75,57 +50,71 @@ const Menu = () => {
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Our Menu</h1>
-
-      {/* Menu Items */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {menuItems.map(item => (
-          <div key={item._id} className="border p-6 rounded-lg shadow hover:shadow-lg transition">
-            <h2 className="text-xl font-semibold mb-2">{item.name}</h2>
-            <p className="text-gray-600 mb-4">{item.description}</p>
-            <p className="text-primary font-bold mb-4">${item.price.toFixed(2)}</p>
-            <button
-              onClick={() => addToCart(item)}
-              className="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-indigo-700"
-            >
-              Add to Cart
-            </button>
-          </div>
+    <div className="py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <h1 className="text-4xl font-bold text-center text-amber-800 mb-12 font-display">Our Menu</h1>
+      
+      {/* Category Tabs */}
+      <div className="flex flex-wrap justify-center gap-2 mb-12">
+        {categories.map(category => (
+          <button
+            key={category}
+            onClick={() => setActiveCategory(category)}
+            className={`px-6 py-2 rounded-full font-montserrat font-medium transition-colors duration-300 ${activeCategory === category 
+              ? 'bg-amber-700 text-white' 
+              : 'bg-amber-100 text-amber-800 hover:bg-amber-200'}`}
+          >
+            {category}
+          </button>
         ))}
       </div>
 
-      {/* Cart Section */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
-
-        {cart.length === 0 ? (
-          <p className="text-gray-600">Your cart is empty.</p>
-        ) : (
-          <div className="space-y-4">
-            {cart.map(item => (
-              <div key={item._id} className="flex items-center justify-between border-b pb-2">
-                <div>
-                  <h3 className="text-lg font-semibold">{item.name}</h3>
-                  <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <p className="font-bold">${(item.price * item.quantity).toFixed(2)}</p>
-                  <button
-                    onClick={() => removeFromCart(item._id)}
-                    className="text-red-500 hover:text-red-700 text-sm"
-                  >
-                    Remove
-                  </button>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredItems.map(item => (
+          <div 
+            key={item._id} 
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+          >
+          <div className="h-48 bg-amber-50 flex items-center justify-center text-amber-800">
+              {item.imageUrl ? (
+                <img 
+                  src={item.imageUrl} 
+                  alt={item.name} 
+                  style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} 
+                />
+              ) : (
+                <span className="font-montserrat">
+                  No Image Available
+                </span>
+              )}
+          </div>
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-2">
+                <h2 className="text-xl font-bold font-montserrat text-gray-800">
+                  {item.name}
+                </h2>
+                <span className="bg-amber-100 text-amber-800 text-sm px-3 py-1 rounded-full">
+                  {item.category}
+                </span>
               </div>
-            ))}
-
-            <div className="text-right mt-6">
-              <h3 className="text-xl font-bold">Total: ${calculateTotal().toFixed(2)}</h3>
+              
+              <p className="text-gray-600 mb-4 font-open-sans">
+                {item.description}
+              </p>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-2xl font-bold text-amber-700">
+                ₹ {item.price.toFixed(2)}
+                </span>
+                <button
+                  onClick={() => addToCart(item)}
+                  className="bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition-colors duration-300 font-montserrat"
+                >
+                  Add to Cart
+                </button>
+              </div>
             </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
