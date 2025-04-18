@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import background from '../assets/images/image2.jpg';
+import background from '../assets/images/image2.webp';
 
 const Form = () => {
     const navigate = useNavigate();
@@ -62,7 +62,7 @@ const Form = () => {
              }}>
             <div className="w-full max-w-md bg-white/90 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden p-8">
                 <h2 className="text-3xl font-bold text-center text-amber-800 mb-8">
-                    Welcome to HotShots
+                    Welcome to Da Aura Cafe & Alehouse
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>

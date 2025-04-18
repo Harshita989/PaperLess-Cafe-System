@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-24">
           <Link to="/" className="flex items-center">
             <img src={logo} alt="HotShots Logo" className="h-16" />
-            <span className="text-3xl font-bold text-white font-display">HotShots</span>
+            <span className="text-3xl font-bold text-white font-display">Da Aura</span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">

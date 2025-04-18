@@ -21,7 +21,6 @@ const Menu = () => {
         setLoading(false);
       }
     };
-
     fetchMenuItems();
   }, []);
 

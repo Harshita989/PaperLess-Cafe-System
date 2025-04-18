@@ -1,37 +1,47 @@
-/* Playwrite IT Moderna - Handwritten headings */
-@font-face {
-  font-family: 'Playwrite';
-  src: url('./Playwrite_IT_Moderna/PlaywriteITModerna[wght].ttf') format('truetype');
-  font-weight: 100 900;
-  font-display: swap;
-}
+/* fonts.css: Font definitions and usage for the app */
 
-/* Open Sans - Body text */
-@font-face {
-  font-family: 'OpenSans';
-  src: url('./Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-display: swap;
-}
+/* Import all required fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Sigmar+One:wght@400&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600;700&family=Inter:wght@400;500;700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600;700&display=swap');
 
-/* Poppins - Buttons/Navigation */
-@font-face {
-  font-family: 'Poppins';
-  src: url('./Poppins/Poppins-Regular.ttf') format('truetype');
+/* Allura for signatures, taglines, fancy italic titles */
+.font-allura, .signature, .tagline, .fancy-title {
+  font-family: 'Allura', cursive;
+  font-style: italic;
   font-weight: 400;
-  font-display: swap;
 }
 
-@font-face {
-  font-family: 'Poppins';
-  src: url('./Poppins/Poppins-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-display: swap;
+/* Sigmar for bold, quirky, eye-catching headings */
+.font-sigmar, .heading-bold, .quirky-heading {
+  font-family: 'Sigmar One', cursive;
+  font-weight: 400;
+  letter-spacing: 1px;
 }
 
-/* Sigmar - Decorative accents */
-@font-face {
-  font-family: 'Sigmar';
-  src: url('./Sigmar/Sigmar-Regular.ttf') format('truetype');
-  font-display: swap;
+/* Playfair Display (closest to Playwrite IT Moderna) for modern subheadings or highlights */
+.font-playwrite, .modern-subheading, .highlight {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+/* Poppins or Inter as primary UI font (buttons, navs, forms) */
+.font-poppins, .ui-primary, button, nav, input, select, textarea {
+  font-family: 'Poppins', 'Inter', Arial, Helvetica, sans-serif;
+  font-weight: 500;
+}
+
+/* Roboto as default paragraph font */
+.font-roboto, p, .paragraph {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+/* Open Sans for body text on small screens */
+.font-opensans, .body-text, body, .responsive-body {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+/* Responsive font sizing (optional utility) */
+.responsive-text {
+  font-size: clamp(1rem, 2vw, 1.25rem);
 }
