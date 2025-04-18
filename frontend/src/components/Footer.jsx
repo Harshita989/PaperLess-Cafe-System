@@ -1,19 +1,62 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiInstagram, FiFacebook, FiTwitter, FiMail } from 'react-icons/fi';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-gradient-to-r from-amber-600 to-amber-800 text-white py-8 font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <h3 className="text-xl font-bold font-display">Da Aura Cafe & Alehouse</h3>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link to="/terms" className="hover:text-amber-200 font-navigation">Terms</Link>
-            <Link to="/privacy" className="hover:text-amber-200 font-navigation">Privacy</Link>
-            <Link to="/contact" className="hover:text-amber-200 font-navigation">Contact</Link>
+    <footer className="w-full h-20 bg-gradient-to-r from-[#6F4E37] to-[#A67B5B] text-white font-sans">
+      {/* Add font link if not globally loaded */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap"
+        rel="stylesheet"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 h-full flex flex-col md:flex-row justify-between items-center text-sm">
+      <h3 className="flex items-center space-x-2">
+  <div
+    className="relative select-none text-white  "
+    
+  >
+    <span className=" brand-font text-[20px]">D</span>
+    <span className="brand-font text-[20px]">A</span>
+    <span className="brand-font text-[32px] relative top-[4px] mx-1 font-semibold">A</span>
+    <span className="brand-font text-[20px]">U</span>
+    <span className="brand-font text-[20px]">R</span>
+    <span className="brand-font text-[20px]">A</span>
+    <div className="absolute left-[40px] top-[24px] text-[16px] text-white/50 font-cursive -rotate-2 pointer-events-none">—</div>
+  </div>
+  <span className="text-sm font-normal font-sans">Cafe & Alehouse</span>
+</h3>
+
+
+        <div className="flex space-x-4 mt-2 md:mt-0 font-navigation">
+          <Link to="/terms" className="hover:text-yellow-200">Terms</Link>
+          <Link to="/privacy" className="hover:text-yellow-200">Privacy</Link>
+          <Link to="/contact" className="hover:text-yellow-200">Contact</Link>
+        </div>
+
+        <div className="mt-2 md:mt-0 flex items-center text-yellow-100">
+          <span>&copy; {new Date().getFullYear()}&nbsp;</span>
+          <div
+            className="relative select-none"
+            style={{
+              fontFamily: "'Cinzel Decorative', serif",
+              fontWeight: 700,
+              letterSpacing: '-4px',
+              display: 'flex',
+              alignItems: 'center',
+              lineHeight: '1',
+            }}
+          >
+            <span className=" brand-font text-[20px]">D</span>
+            <span className="brand-font text-[20px]">A</span>
+            <span className="brand-font text-[32px] relative top-[4px] mx-1 font-semibold">A</span>
+            <span className="brand-font text-[20px]">U</span>
+            <span className="brand-font text-[20px]">R</span>
+            <span className="brand-font text-[20px]">A</span>
+            <div className="absolute left-[40px] top-[24px] text-[16px] text-white/50 font-cursive -rotate-2 pointer-events-none">—</div>
           </div>
-          <p className="text-amber-200 mt-4 md:mt-0"> {new Date().getFullYear()} Da Aura. All rights reserved</p>
+          <span className="ml-1">. All rights reserved.</span>
         </div>
       </div>
     </footer>

@@ -1,3 +1,4 @@
+
 import './App.css';
 import './index.css';
 import './assets/fonts/fonts.css';
@@ -9,12 +10,18 @@ import AppRoutes from './components/AppRoutes';
 function App() {
   return (
     <CartProvider>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
+      <div className="flex flex-col h-screen">
+        <header className="shrink-0">
+          <Navbar />
+        </header>
+
+        <main className="flex-grow ">
           <AppRoutes />
         </main>
-        <Footer />
+
+        <footer className="shrink-0">
+          <Footer />
+        </footer>
       </div>
     </CartProvider>
   );

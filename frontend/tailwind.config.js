@@ -18,6 +18,8 @@ export default {
         inter: ["Inter", "Arial", "Helvetica", "sans-serif"],
         roboto: ["Roboto", "Arial", "Helvetica", "sans-serif"],
         opensans: ["Open Sans", "Arial", "Helvetica", "sans-serif"],
+        brand: ['"Cinzel Decorative"', 'serif'],
+
       },
     },
   },
