@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // ✅ Import axios
 import background from '../assets/images/image2.webp';
 
 const Form = () => {
@@ -8,10 +9,8 @@ const Form = () => {
         whatsapp: '',
         name: ''
     });
-    const [errors, setErrors] = useState({
-        whatsapp: '',
-        name: ''
-    });
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false); // Optional loading state
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -46,30 +45,37 @@ const Form = () => {
         return isValid;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (validateForm()) {
+        if (!validateForm()) return;
+
+        try {
+            setLoading(true);
+            const response = await axios.post('http://localhost:9000/api/user', formData); // 🔗 Backend API endpoint
+            console.log('User saved:', response.data);
             navigate('/menu');
+        } catch (error) {
+            console.error('Error saving user:', error);
+            alert('Something went wrong while saving your info!');
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4" 
-             style={{
-               backgroundImage: `url(${background})`,
-               backgroundSize: 'cover',
-               backgroundPosition: 'left center'
-             }}>
+            style={{
+                backgroundImage: `url(${background})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'left center'
+            }}>
             <div className="w-full max-w-md bg-white/90 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden p-8">
                 <h2 className="text-3xl font-bold text-center text-amber-800 mb-8">
                     Welcome to Da Aura Cafe & Alehouse
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label 
-                            htmlFor="whatsapp" 
-                            className="block text-sm font-medium text-gray-700 mb-1"
-                        >
+                        <label htmlFor="whatsapp" className="block text-sm font-medium text-gray-700 mb-1">
                             WhatsApp Number
                         </label>
                         <input
@@ -83,16 +89,11 @@ const Form = () => {
                                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
                                 transition-all duration-300 placeholder-gray-400`}
                         />
-                        {errors.whatsapp && (
-                            <p className="mt-1 text-sm text-red-600">{errors.whatsapp}</p>
-                        )}
+                        {errors.whatsapp && <p className="mt-1 text-sm text-red-600">{errors.whatsapp}</p>}
                     </div>
 
                     <div>
-                        <label 
-                            htmlFor="name" 
-                            className="block text-sm font-medium text-gray-700 mb-1"
-                        >
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                             Name
                         </label>
                         <input
@@ -106,9 +107,7 @@ const Form = () => {
                                 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
                                 transition-all duration-300 placeholder-gray-400`}
                         />
-                        {errors.name && (
-                            <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-                        )}
+                        {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                     </div>
 
                     <button
@@ -116,8 +115,9 @@ const Form = () => {
                         className="w-full bg-primary text-white py-3 px-4 rounded-xl
                             hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
                             transition-all duration-300 font-medium text-sm"
+                        disabled={loading}
                     >
-                        Continue to Menu
+                        {loading ? 'Saving...' : 'Continue to Menu'}
                     </button>
                 </form>
             </div>

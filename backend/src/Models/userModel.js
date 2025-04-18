@@ -6,7 +6,7 @@ const userSchema = new Schema ({
         type: String,
         required: true,
     },
-    whatsappNo: {
+    whatsapp: {
         type: String,
         required: true,
     }
@@ -14,4 +14,4 @@ const userSchema = new Schema ({
     timestamps :true
 });
 
-export const User = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);
