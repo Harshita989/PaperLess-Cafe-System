@@ -52,7 +52,6 @@ const Menu = () => {
     <div className="py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <h1 className="text-4xl font-bold text-center text-amber-800 mb-12 font-display">Our Menu</h1>
       
-      {/* Category Tabs */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">
         {categories.map(category => (
           <button

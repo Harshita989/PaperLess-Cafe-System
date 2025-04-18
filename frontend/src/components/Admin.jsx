@@ -9,7 +9,6 @@ const Admin = () => {
     category: '',
     isAvailable: true,
     imageUrl: '',
-    spiceLevel: '',
     ingredients: '',
     preparationTime: '',
   });
@@ -77,7 +76,6 @@ const Admin = () => {
         category: '',
         isAvailable: true,
         imageUrl: '',
-        spiceLevel: '',
         ingredients: '',
         preparationTime: '',
       });
@@ -97,7 +95,6 @@ const Admin = () => {
       category: item.category,
       isAvailable: item.isAvailable,
       imageUrl: item.imageUrl,
-      spiceLevel: item.spiceLevel,
       ingredients: item.ingredients.join(', '),
       preparationTime: item.preparationTime,
     });
@@ -118,7 +115,6 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-amber-50 p-8 font-sans">
-      {/* Add/Edit Form Section */}
       <div className="bg-white rounded-xl shadow-lg p-6 mb-8 max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold text-amber-800 mb-6 font-display">
           {editingId ? 'Update Menu Item' : 'Add New Menu Item'}
@@ -223,21 +219,6 @@ const Admin = () => {
             />
           </div>
           
-          <div className="space-y-2">
-            <label className="block text-gray-700 font-medium">Spice Level</label>
-            <select
-              name="spiceLevel"
-              value={formData.spiceLevel}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            >
-              <option value="">Select spice level</option>
-              <option value="Mild">Mild</option>
-              <option value="Medium">Medium</option>
-              <option value="Hot">Hot</option>
-            </select>
-          </div>
-          
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -260,7 +241,6 @@ const Admin = () => {
         </form>
       </div>
       
-      {/* Menu Items Table Section */}
       <div className="bg-white rounded-xl shadow-lg p-6 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-amber-800 mb-6 font-display">Menu Items</h2>
         

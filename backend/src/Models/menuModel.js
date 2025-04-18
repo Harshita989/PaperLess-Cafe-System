@@ -29,10 +29,6 @@ const menuSchema = new Schema({
         type: String,
         trim: true,
     },
-    spiceLevel: {
-        type: String,
-        enum: ['Mild', 'Medium', 'Hot'],
-    },
     ingredients: {
         type: [String],
         default: [],
