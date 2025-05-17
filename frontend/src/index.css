@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+#root{
+  height:100%;
+  width:100%;
+}
+
 @layer components {
   .nav-link {
     @apply text-gray-600 hover:text-emerald-500 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300;
@@ -40,11 +45,13 @@
 
 /* Smooth scrolling */
 html {
+  
   scroll-behavior: smooth;
 }
 
 /* Better text rendering */
 body {
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;

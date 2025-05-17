@@ -10,7 +10,7 @@ import AppRoutes from './components/AppRoutes';
 function App() {
   return (
     <CartProvider>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-screen w-screen">
         <header className="shrink-0">
           <Navbar />
         </header>
