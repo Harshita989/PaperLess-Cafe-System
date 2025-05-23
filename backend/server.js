@@ -4,7 +4,8 @@ import cors from 'cors';
 
 import menuRoutes from './src/api/menu.js';
 import cartRoutes from './src/api/cart.js';
-import userRoutes from './src/api/user.js'; 
+import userRoutes from './src/api/user.js';
+import orderRoutes from './src/api/order.js';
 
 const port = 9000;
 const app = express();
@@ -14,7 +15,8 @@ app.use(cors());
 
 app.use('/api/menu', menuRoutes);
 app.use('/api/cart', cartRoutes);
-app.use('/api/user', userRoutes); 
+app.use('/api/user', userRoutes);
+app.use('/api/orders', orderRoutes);
 
 const mongoURL = "mongodb://localhost:27017/paperless_cafe";
 

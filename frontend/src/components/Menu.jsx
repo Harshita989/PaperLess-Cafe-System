@@ -1,13 +1,37 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
+import toast from 'react-hot-toast';
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState('All');
-  const { addToCart } = useCart();
+  const { addToCart, userId } = useCart();
+  const navigate = useNavigate();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
+  const handleAddToCart = (item) => {
+    if (!userId) {
+      setShowLoginPrompt(true);
+      toast('Please login to add items to cart', {
+        icon: '🔒',
+        duration: 3000,
+      });
+      return;
+    }
+    addToCart(item);
+    toast.success(`${item.name} added to cart!`, {
+      position: 'bottom-right',
+      duration: 2000,
+    });
+  };
+
+  const handleGoToForm = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -17,11 +41,19 @@ const Menu = () => {
         setLoading(false);
       } catch (err) {
         console.error('Error fetching menu items:', err);
-        setError('Failed to load menu items.');
+        const errorMessage = 'Failed to load menu items. Please try again later.';
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          duration: 5000,
+        });
         setLoading(false);
       }
     };
-    fetchMenuItems();
+    
+    const loadingToast = toast.loading('Loading menu...');
+    fetchMenuItems().finally(() => {
+      toast.dismiss(loadingToast);
+    });
   }, []);
 
   // Get unique categories
@@ -48,64 +80,94 @@ const Menu = () => {
     );
   }
 
-  return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 font-sans">
-      <h1 className="text-4xl font-bold text-center text-amber-800 mb-12 font-display">Our Menu</h1>
-      
-      <div className="flex flex-wrap justify-center gap-2 mb-12">
-        {categories.map(category => (
+  if (showLoginPrompt) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+          <h2 className="text-2xl font-bold text-amber-800 mb-4">Login Required</h2>
+          <p className="text-gray-600 mb-6">
+            Please enter your details to start ordering
+          </p>
           <button
-            key={category}
-            onClick={() => setActiveCategory(category)}
-            className={`px-6 py-2 rounded-full font-montserrat font-medium transition-colors duration-300 ${activeCategory === category 
-              ? 'bg-amber-700 text-white' 
-              : 'bg-amber-100 text-amber-800 hover:bg-amber-200'}`}
+            onClick={handleGoToForm}
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
           >
-            {category}
+            Go to Login
           </button>
-        ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="py-8 px-4 sm:px-6 lg:px-8 font-sans max-w-7xl mx-auto">
+      <h1 className="text-4xl font-bold text-center text-amber-800 mb-8 font-display">Our Menu</h1>
+      
+      <div className="relative">
+        <div className="flex space-x-2 pb-4 overflow-x-auto scrollbar-hide whitespace-nowrap">
+          {categories.map(category => (
+            <button
+              key={category}
+              onClick={() => {
+                setActiveCategory(category);
+                // Smooth scroll to top when changing categories
+                window.scrollTo({ top: 200, behavior: 'smooth' });
+              }}
+              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap ${
+                activeCategory === category
+                  ? 'bg-amber-700 text-white font-bold shadow-md'
+                  : 'bg-amber-50 text-amber-800 hover:bg-amber-100 font-medium'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredItems.map(item => (
           <div 
             key={item._id} 
-            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full"
           >
-          <div className="h-48 bg-amber-50 flex items-center justify-center text-amber-800">
+            <div className="relative h-48 w-full overflow-hidden">
               {item.imageUrl ? (
                 <img 
                   src={item.imageUrl} 
-                  alt={item.name} 
-                  style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} 
+                  alt={item.name}
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
               ) : (
-                <span className="font-montserrat">
-                  No Image Available
-                </span>
+                <div className="w-full h-full bg-amber-50 flex items-center justify-center">
+                  <span className="text-amber-800 font-medium">No Image Available</span>
+                </div>
               )}
-          </div>
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-2">
-                <h2 className="text-xl font-bold font-montserrat text-gray-800">
-                  {item.name}
-                </h2>
-                <span className="bg-amber-100 text-amber-800 text-sm px-3 py-1 rounded-full">
-                  {item.category}
-                </span>
+            </div>
+            
+            <div className="p-4 pt-3 flex flex-col flex-grow">
+              <div className="flex-grow">
+                <div className="flex justify-between items-start">
+                  <h2 className="text-xl font-bold text-gray-800 line-clamp-2">
+                    {item.name}
+                  </h2>
+                  <span className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2">
+                    {item.category}
+                  </span>
+                </div>
+                
+                <p className="text-gray-600 text-sm mt-1 mb-3 line-clamp-3">
+                  {item.description}
+                </p>
               </div>
               
-              <p className="text-gray-600 mb-4 font-open-sans">
-                {item.description}
-              </p>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-2xl font-bold text-amber-700">
-                ₹ {item.price.toFixed(2)}
+              <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+                <span className="text-xl font-bold text-amber-700">
+                  ₹{item.price.toFixed(2)}
                 </span>
                 <button
-                  onClick={() => addToCart(item)}
-                  className="bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 transition-colors duration-300 font-montserrat"
+                  onClick={() => handleAddToCart(item)}
+                  className="bg-amber-700 hover:bg-amber-800 text-white px-4 py-2 rounded-lg transition-all duration-300 font-medium text-sm md:text-base whitespace-nowrap"
                 >
                   Add to Cart
                 </button>

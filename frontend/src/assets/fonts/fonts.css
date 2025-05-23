@@ -1,47 +1,108 @@
-/* fonts.css: Font definitions and usage for the app */
+/* 
+ * fonts.css: Premium typography for Resto Cafe
+ * Using carefully selected Google Fonts for an elegant, readable experience
+ */
 
-/* Import all required fonts from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Allura&family=Sigmar+One:wght@400&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600;700&family=Inter:wght@400;500;700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600;700&display=swap');
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;500&display=swap');
 
-/* Allura for signatures, taglines, fancy italic titles */
-.font-allura, .signature, .tagline, .fancy-title {
-  font-family: 'Allura', cursive;
+/* 
+ * 1. Headings & Logo: Cormorant Garamond (Elegant serif)
+ *    - Perfect for a premium, sophisticated look
+ *    - Works well for both display and body text at larger sizes
+ */
+.font-heading, 
+.brand-font,
+h1, h2, h3, h4, h5, h6,
+.logo-text,
+.menu-category {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+}
+
+/* 
+ * 2. Body Text: Montserrat (Clean, modern sans-serif)
+ *    - Excellent readability at all sizes
+ *    - Modern yet warm feel
+ */
+body,
+.font-body,
+p, 
+span,
+li,
+input,
+select,
+textarea,
+.paragraph {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* 
+ * 3. Special Text: Playfair Display (For special headings/accent text)
+ *    - Elegant and distinctive
+ *    - Great for section headers and special elements
+ */
+.font-special,
+.section-title,
+.menu-item-name,
+.highlight {
+  font-family: 'Playfair Display', serif;
   font-style: italic;
   font-weight: 400;
 }
 
-/* Sigmar for bold, quirky, eye-catching headings */
-.font-sigmar, .heading-bold, .quirky-heading {
-  font-family: 'Sigmar One', cursive;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
-
-/* Playfair Display (closest to Playwrite IT Moderna) for modern subheadings or highlights */
-.font-playwrite, .modern-subheading, .highlight {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-}
-
-/* Poppins or Inter as primary UI font (buttons, navs, forms) */
-.font-poppins, .ui-primary, button, nav, input, select, textarea {
-  font-family: 'Poppins', 'Inter', Arial, Helvetica, sans-serif;
+/* 
+ * 4. UI Elements: Roboto (Clean, functional)
+ *    - Highly readable at small sizes
+ *    - Perfect for buttons, forms, and controls
+ */
+button,
+.font-ui,
+.btn,
+.nav-link,
+input,
+select,
+label,
+.button {
+  font-family: 'Roboto', sans-serif;
   font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
-/* Roboto as default paragraph font */
-.font-roboto, p, .paragraph {
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
-  font-weight: 400;
+/* Responsive typography */
+html {
+  font-size: 16px;
 }
 
-/* Open Sans for body text on small screens */
-.font-opensans, .body-text, body, .responsive-body {
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-  font-weight: 400;
+@media (min-width: 768px) {
+  html {
+    font-size: 18px;
+  }
 }
 
-/* Responsive font sizing (optional utility) */
-.responsive-text {
-  font-size: clamp(1rem, 2vw, 1.25rem);
+/* Text utilities */
+.text-uppercase {
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
+
+.text-shadow {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Font weights */
+.font-light { font-weight: 300; }
+.font-regular { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Line heights */
+.leading-tight { line-height: 1.2; }
+.leading-normal { line-height: 1.6; }
+.leading-relaxed { line-height: 1.8; }
