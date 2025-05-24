@@ -9,6 +9,7 @@ import Navbar from "./Navbar";
 import ProtectedRoute from "./admin/ProtectedRoute";
 import Orders from "./Orders";
 import OrderStatus from "./OrderStatus";
+import About from "./About";
 
 function AppRoutes() {
   const location = useLocation();
@@ -56,6 +57,7 @@ function AppRoutes() {
               </ProtectedRoute>
             } 
           />
+          <Route path="/about" element={<About />} />
           
           {/* Regular User Routes */}
           <Route path="/cart" element={
