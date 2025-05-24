@@ -7,16 +7,17 @@ import AdminLoginModal from './AdminLoginModal';
 const MenuManagement = () => {
   const { isAdmin, logout } = useAdmin();
   
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    category: '',
-    isAvailable: true,
-    imageUrl: '',
-    ingredients: '',
-    preparationTime: '',
-  });
+ const [formData, setFormData] = useState({
+  name: '',
+  description: '',
+  price: '',
+  category: '',
+  isAvailable: true,
+  imageUrl: '',   // still needed to store the uploaded image URL
+  imageFile: null, // NEW
+  ingredients: '',
+  preparationTime: '',
+});
   
   const [menuItems, setMenuItems] = useState([]);
   const [message, setMessage] = useState({ text: '', type: '' });
@@ -59,53 +60,65 @@ const MenuManagement = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (!formData.name.trim()) {
-        setMessage({ text: 'Name is required', type: 'error' });
-        return;
-      }
-      if (!formData.price || parseFloat(formData.price) <= 0) {
-        setMessage({ text: 'Price must be a positive number', type: 'error' });
-        return;
-      }
-      if (!formData.category) {
-        setMessage({ text: 'Category is required', type: 'error' });
-        return;
-      }
+  e.preventDefault();
 
-      const payload = {
-        ...formData,
-        price: parseFloat(formData.price),
-        ingredients: formData.ingredients ? formData.ingredients.split(',').map(i => i.trim()) : [],
-        preparationTime: parseInt(formData.preparationTime) || 0,
-      };
+  try {
+    // Validate inputs
+    if (!formData.name.trim()) return setMessage({ text: 'Name is required', type: 'error' });
+    if (!formData.price || parseFloat(formData.price) <= 0) return setMessage({ text: 'Price must be a positive number', type: 'error' });
+    if (!formData.category) return setMessage({ text: 'Category is required', type: 'error' });
 
-      if (editingId) {
-        await axios.put(`http://localhost:9000/api/menu/${editingId}`, payload);
-        setMessage({ text: 'Menu item updated successfully!', type: 'success' });
-      } else {
-        await axios.post('http://localhost:9000/api/menu', payload);
-        setMessage({ text: 'Menu item added successfully!', type: 'success' });
-      }
+    let imageUrl = formData.imageUrl;
 
-      setFormData({
-        name: '',
-        description: '',
-        price: '',
-        category: '',
-        isAvailable: true,
-        imageUrl: '',
-        ingredients: '',
-        preparationTime: '',
+    // ✅ Upload image if a file is selected
+    if (formData.imageFile) {
+      const imgFormData = new FormData();
+      imgFormData.append('image', formData.imageFile);
+
+      const uploadRes = await axios.post('http://localhost:9000/api/upload', imgFormData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setEditingId(null);
-      fetchMenuItems();
-    } catch (err) {
-      console.error('Submit failed:', err);
-      setMessage({ text: 'Failed to save menu item', type: 'error' });
+
+      imageUrl = uploadRes.data.imageUrl; // Get image URL from server
     }
-  };
+
+    const payload = {
+      ...formData,
+      imageUrl,
+      price: parseFloat(formData.price),
+      ingredients: formData.ingredients ? formData.ingredients.split(',').map(i => i.trim()) : [],
+      preparationTime: parseInt(formData.preparationTime) || 0,
+    };
+
+    delete payload.imageFile;
+
+    if (editingId) {
+      await axios.put(`http://localhost:9000/api/menu/${editingId}`, payload);
+      setMessage({ text: 'Menu item updated successfully!', type: 'success' });
+    } else {
+      await axios.post('http://localhost:9000/api/menu', payload);
+      setMessage({ text: 'Menu item added successfully!', type: 'success' });
+    }
+
+    setFormData({
+      name: '',
+      description: '',
+      price: '',
+      category: '',
+      isAvailable: true,
+      imageUrl: '',
+      imageFile: null,
+      ingredients: '',
+      preparationTime: '',
+    });
+    setEditingId(null);
+    fetchMenuItems();
+  } catch (err) {
+    console.error('Submit failed:', err);
+    setMessage({ text: 'Failed to save menu item', type: 'error' });
+  }
+};
+
 
   const handleEdit = (item) => {
     setFormData({
@@ -190,17 +203,18 @@ const MenuManagement = () => {
             </select>
           </div>
           
-          <div className="space-y-2">
-            <label className="block text-gray-700 font-medium">Image URL</label>
-            <input
-              type="text"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              placeholder="https://example.com/image.jpg"
-            />
-          </div>
+         <div className="space-y-2">
+  <label className="block text-gray-700 font-medium">Upload Image</label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) =>
+      setFormData({ ...formData, imageFile: e.target.files[0] })
+    }
+    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+  />
+</div>
+
           
           <div className="space-y-2">
             <label className="block text-gray-700 font-medium">Description</label>
@@ -327,3 +341,7 @@ const MenuManagement = () => {
 };
 
 export default MenuManagement;
+
+
+
+
